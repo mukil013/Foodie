@@ -11,10 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-<<<<<<< HEAD
     "dotenv": "^16.4.5",
-=======
->>>>>>> 787333f245aa89d83f370b911ba49da7e1e8ed61
     "express": "^4.21.1",
     "mongodb": "^6.10.0",
     "mongoose": "^8.8.0",
