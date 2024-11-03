@@ -3,9 +3,9 @@ import TextField from '@mui/material/TextField';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { Button, Snackbar, Alert } from '@mui/material';
+import { Button, Snackbar, Alert, CircularProgress } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Register() {
@@ -22,35 +22,53 @@ export default function Register() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
 
   function handleProfileImageChange(event) {
     const file = event.target.files[0];
-    if (file) {
+    if (file && file.size <= 2 * 1024 * 1024) { // Limit to 2MB
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfileImage(reader.result);
       };
       reader.readAsDataURL(file);
+    } else {
+      showSnackbar('Profile image must be less than 2MB', 'error');
     }
   }
 
   function handleHotelImageChange(event) {
     const file = event.target.files[0];
-    if (file) {
+    if (file && file.size <= 2 * 1024 * 1024) { // Limit to 2MB
       const reader = new FileReader();
       reader.onloadend = () => {
         setHotelImage(reader.result);
       };
       reader.readAsDataURL(file);
+    } else {
+      showSnackbar('Hotel image must be less than 2MB', 'error');
     }
   }
 
+  const isFormValid = () => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return (
+      username &&
+      emailPattern.test(email) &&
+      password.length >= 6 &&
+      password === confirmPassword &&
+      (!isSeller || (hotelName && hotelAddress && hotelContactNumber))
+    );
+  };
+
   async function handleRegister() {
-    if (password !== confirmPassword) {
-      showSnackbar("Passwords do not match", "error");
+    if (!isFormValid()) {
+      showSnackbar('Please fill out all fields correctly', 'error');
       return;
     }
 
+    setLoading(true); // Set loading to true
     let newUser = {
       email,
       password,
@@ -72,10 +90,13 @@ export default function Register() {
     try {
       const response = await axios.post('http://localhost:3000/user/register', newUser);
       showSnackbar('Registration successful: ' + response.data.message, 'success');
+      navigate('/login')
       resetForm();
     } catch (error) {
       console.error('Error registering user:', error);
       showSnackbar('Registration failed: ' + (error.response?.data?.message || error.message), 'error');
+    } finally {
+      setLoading(false); // Reset loading to false
     }
   }
 
@@ -225,13 +246,14 @@ export default function Register() {
         )}
 
         <Button
-          endIcon={<AccountCircleIcon />}
+          endIcon={loading ? <CircularProgress size={20} /> : <AccountCircleIcon />}
           variant='contained'
           color='success'
           onClick={handleRegister}
           fullWidth
+          disabled={loading || !isFormValid()} // Disable button if loading or form is invalid
         >
-          Register
+          {loading ? 'Registering...' : 'Register'}
         </Button>
 
         <p className='mt-4'>Already have an account? <Link to='/login'>Login Here</Link></p>

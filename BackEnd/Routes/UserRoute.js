@@ -41,28 +41,21 @@ route.post('/register', async (req, res) => {
   }
 });
 
-route.post('/login', async (req, res) => { // Change GET to POST for login
+route.post('/login', async (req, res) => {
   try {
-    let userData = {
-      email: req.body.email,
-      password: req.body.password
-    };
-
-    const user = await Users.findOne({ email: userData.email });
-    
-    if (user) {
-      // Compare the hashed password with the plain text password
-      const match = await bcrypt.compare(userData.password, user.password);
-      if (match) {
-        return res.status(200).send("Login Successful");
-      } else {
-        return res.status(400).send("Invalid credentials");
-      }
-    } else {
-      return res.status(400).send("Invalid credentials");
+    const user = await Users.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
     }
-  } catch (e) {
-    return res.status(500).send({ message: e.message });
+
+    const isMatch = await bcrypt.compare(req.body.password, user.password);
+    if (!isMatch) {
+      return res.status(400).send({ message: 'Invalid credentials' });
+    }
+
+    res.send({ message: 'Login successful', isSeller: user.isSeller });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
   }
 });
 

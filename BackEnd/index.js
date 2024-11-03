@@ -31,10 +31,7 @@ const startServer = () => {
   const app = express();
 
   // Middleware setup
-  app.use(cors({
-    origin: '*', // Adjust this as needed for production
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Specify the methods you want to allow
-  }));
+  app.use(cors());
   app.use(express.json({ limit: '10mb' })); // Set a limit on the size of the incoming JSON payloads
 
   // Routes
