@@ -1,8 +1,5 @@
 import React from "react";
-import { Routes, Route, NavLink } from "react-router-dom";
-import Home from "../../Pages/admin/Home";
-import Status from "../../Pages/admin/Status";
-import History from "../../Pages/admin/History";
+import { NavLink } from "react-router-dom";
 
 export default function NavBar() {
   return (
@@ -23,12 +20,6 @@ export default function NavBar() {
           </li>
         </ul>
       </nav>
-
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route path="/status" element={<Status />} />
-        <Route path="/history" element={<History />} />
-      </Routes>
     </>
   );
 }
