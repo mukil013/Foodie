@@ -3,6 +3,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from 'cors';
 import UserRoute from './Routes/UserRoute.js';
+import FoodRoute from './Routes/foodRoute.js'; 
 
 dotenv.config();
 
@@ -14,12 +15,18 @@ if (!process.env.MONGO_URL) {
 
 const MongoDB = process.env.MONGO_URL;
 const PORT = process.env.PORT || 5000;
+const app = express();
+app.use(cors());
 
 // Connect to MongoDB
 const connectDB = async () => {
   try {
     await mongoose.connect(MongoDB);
     console.log("MongoDB Connected");
+
+    // Middleware setup
+    app.use(express.json({ limit: '10mb' })); 
+
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
     process.exit(1); // Exit the process with failure
@@ -28,14 +35,10 @@ const connectDB = async () => {
 
 // Start the Express server
 const startServer = () => {
-  const app = express();
-
-  // Middleware setup
-  app.use(cors());
-  app.use(express.json({ limit: '10mb' })); // Set a limit on the size of the incoming JSON payloads
-
+  
   // Routes
   app.use('/user', UserRoute);
+  app.use('/food', FoodRoute);
 
   // Error handling middleware
   app.use((err, req, res, next) => {
@@ -55,3 +58,4 @@ const init = async () => {
 };
 
 init();
+

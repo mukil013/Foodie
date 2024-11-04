@@ -19,37 +19,46 @@ export default function Login() {
       email: email,
       password: password
     };
-
+  
     try {
-      const response = await fetch('http://localhost:3000/user/login', { // Update with your actual API endpoint
+      const response = await fetch('http://localhost:3000/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(user)
       });
-
+  
       if (!response.ok) {
         throw new Error('Invalid credentials');
       }
-
+  
       const data = await response.json();
-
-      // Check if the user is a seller
+  
+      // Save specific user information in local storage
+      localStorage.setItem('userId', data.userId)
+      localStorage.setItem('userName', data.userName);
+      localStorage.setItem('userEmail', data.userEmail);
+      localStorage.setItem('profilePic', data.profilePic);
+      localStorage.setItem('hotelName', data.hotelName);
+      localStorage.setItem('hotelImage', data.hotelImage);
+  
+      // Redirect based on user role
       if (data.isSeller) {
-        navigate('/admin'); // Redirect to admin page for sellers
+        navigate('/admin');
       } else {
-        navigate('/user'); // Redirect to user page for regular users
+        navigate('/user');
       }
     } catch (error) {
       setError(error.message);
     }
-
+  
     // Reset the form
     setEmail('');
     setPassword('');
     setIsSeller(false);
   }
+  
 
   return (
     <div className='h-dvh w-dvw flex justify-center items-center'>

@@ -10,7 +10,7 @@ export default function NavBar() {
         </div>
         <ul className="flex gap-4">
           <li>
-            <NavLink activeClassName="active" to="/">Home</NavLink>
+            <NavLink activeClassName="active" to="/admin">Home</NavLink>
           </li>
           <li>
             <NavLink activeClassName="active" to="/status">Status</NavLink>

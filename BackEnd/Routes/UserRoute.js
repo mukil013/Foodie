@@ -53,10 +53,21 @@ route.post('/login', async (req, res) => {
       return res.status(400).send({ message: 'Invalid credentials' });
     }
 
-    res.send({ message: 'Login successful', isSeller: user.isSeller });
+    // Send necessary user details in the response
+    res.send({
+      message: 'Login successful',
+      userId: user._id, 
+      isSeller: user.isSeller,
+      userName: user.userName,
+      userEmail: user.email,
+      profilePic: user.profilePic,
+      hotelName: user.hotelName,
+      hotelImage: user.hotelImg
+    });
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
 });
+
 
 export default route;
