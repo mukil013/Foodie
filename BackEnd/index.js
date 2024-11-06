@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cors from 'cors';
 import UserRoute from './Routes/UserRoute.js';
 import FoodRoute from './Routes/foodRoute.js'; 
+import CartRoute from './Routes/cartRoute.js';
 
 dotenv.config();
 
@@ -26,7 +27,7 @@ const connectDB = async () => {
     // Middleware setup
     app.use(express.json({ limit: '10mb' })); 
     app.use(cors());
-    
+
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
     process.exit(1); // Exit the process with failure
@@ -39,6 +40,7 @@ const startServer = () => {
   // Routes
   app.use('/user', UserRoute);
   app.use('/food', FoodRoute);
+  app.use('/cart', CartRoute);
 
   // Error handling middleware
   app.use((err, req, res, next) => {

@@ -1,88 +1,96 @@
-import express from 'express';
-import Cart from '../models/Cart.js';  // Importing the Cart model
+import express from "express";
+import Cart from "../Models/cartModel.js";
+import cartModel from "../Models/cartModel.js";
 
 const router = express.Router();
 
-// Add a food item to the cart for a specific user
-router.post('/add', async (req, res) => {
-  const { foodId, foodName, foodPrice, foodImage, userId, quantity, status } = req.body;
+// Add or update a food item in the cart for a specific user
+router.post("/add", async (req, res) => {
+  const { foodId, foodName, foodPrice, foodImage, userId, quantity, status } =
+    req.body;
 
   try {
-    // Check if the food item already exists in the cart
-    let cartItem = await Cart.findOne({ foodId });
+    // Find the cart item by foodId and userId (cart items are unique by foodId for each user)
+    let cartItem = await Cart.findOne({ foodId, userId });
 
     if (cartItem) {
-      // Update the cart item if the user already exists
-      const userInCart = cartItem.users.find(user => user.userId.toString() === userId);
-
-      if (userInCart) {
-        // Update the existing user's quantity and status
-        userInCart.quantity += quantity;
-        userInCart.status = status;
-      } else {
-        // Add the user to the users array if they don't already exist
-        cartItem.users.push({ userId, quantity, status });
-      }
-
+      // Update the existing cart item with new quantity and status
+      cartItem.quantity += quantity;
+      cartItem.status = status;
       await cartItem.save();
-      res.status(200).json({ message: 'Cart updated successfully', cartItem });
+      res.status(200).json({ message: "Cart updated successfully", cartItem });
     } else {
-      // Create a new cart item if it doesn't exist
+      // Create a new cart item if it does not exist
       cartItem = new Cart({
         foodId,
         foodName,
         foodPrice,
         foodImage,
-        users: [{ userId, quantity, status }]
+        userId,
+        quantity,
+        status,
       });
+
       await cartItem.save();
-      res.status(201).json({ message: 'Item added to cart', cartItem });
+      res.status(201).json({ message: "Item added to cart", cartItem });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error adding item to cart', error });
+    res.status(500).json({ message: "Error adding item to cart", error });
   }
 });
 
 // Retrieve cart items for a specific user
-router.get('/:userId', async (req, res) => {
+router.get("/:userId", async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const cartItems = await Cart.find({ 'users.userId': userId });
+    // Find all cart items for the user
+    const cartItems = await Cart.find({ userId });
     res.status(200).json(cartItems);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error retrieving cart items', error });
+    res.status(500).json({ message: "Error retrieving cart items", error });
   }
 });
 
 // Remove a food item from the cart for a specific user
-router.delete('/remove', async (req, res) => {
+router.delete("/remove", async (req, res) => {
   const { foodId, userId } = req.body;
 
+  if (!foodId || !userId) {
+    return res.status(400).json({ message: "foodId and userId are required." });
+  }
+
   try {
-    const cartItem = await Cart.findOne({ foodId });
+    // Find the cart item by foodId and userId
+    const cartItem = await Cart.findOne({ foodId, userId });
 
     if (!cartItem) {
-      return res.status(404).json({ message: 'Cart item not found' });
+      return res.status(404).json({ message: "Cart item not found" });
     }
 
-    // Remove the specific user from the cart item's users array
-    cartItem.users = cartItem.users.filter(user => user.userId.toString() !== userId);
-
-    // If no users remain for this food item, delete the cart item entirely
-    if (cartItem.users.length === 0) {
-      await Cart.findByIdAndDelete(cartItem._id);
-    } else {
-      await cartItem.save();
-    }
-
-    res.status(200).json({ message: 'Cart item removed successfully' });
+    // Delete the cart item
+    await Cart.findByIdAndDelete(cartItem._id);
+    res.status(200).json({ message: "Cart item removed successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error removing cart item', error });
+    res.status(500).json({ message: "Error removing cart item", error });
   }
 });
+
+router.get("/", async (req, res) => {
+  try {
+    // Wait for the cart items to be fetched
+    const cart = await cartModel.find();
+
+    // Send the result as a response
+    return res.status(200).json(cart);
+  } catch (e) {
+    // Return error message if there's an issue
+    return res.status(400).send({ message: e.message });
+  }
+});
+
 
 export default router;
