@@ -256,7 +256,7 @@ export default function Register() {
           {loading ? 'Registering...' : 'Register'}
         </Button>
 
-        <p className='mt-4'>Already have an account? <Link to='/login'>Login Here</Link></p>
+        <p className='mt-4'>Already have an account? <Link to='/'>Login Here</Link></p>
       </FormGroup>
 
       <Snackbar
