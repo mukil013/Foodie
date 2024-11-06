@@ -88,7 +88,7 @@ export default function Register() {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/user/register', newUser);
+      const response = await axios.post('https://foodie-vqll.onrender.com/user/register', newUser);
       showSnackbar('Registration successful: ' + response.data.message, 'success');
       navigate('/')
       resetForm();

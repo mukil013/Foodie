@@ -21,14 +21,14 @@ export default function Login() {
     };
   
     try {
-      const response = await fetch('http://localhost:3000/user/login', {
+      const response = await fetch('https://foodie-vqll.onrender.com/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(user)
       });
-  
+
       if (!response.ok) {
         throw new Error('Invalid credentials');
       }
