@@ -32,7 +32,7 @@ export default function Home() {
 
   const fetchFoodItems = async () => {
     try {
-      const response = await axios.get('https://localhost:3000/food/getFood');
+      const response = await axios.get('http://localhost:3000/food/get-food');
       setFoodItems(response.data);
       console.log(response.data)
     } catch (error) {
@@ -81,9 +81,9 @@ export default function Home() {
     };
 
     try {
-        const response = await axios.post('https://localhost:3000/food/addFood', newFoodItem);
+        const response = await axios.post('http://localhost:3000/food/add-food', newFoodItem);
         console.log('Food item added:', response.data);
-        setFoodItems([...foodItems, response.data.foodItem]); // Update food items list
+        setFoodItems([...foodItems, response.data.foodItem]);
         handleClose();
     } catch (error) {
         console.error('Error adding food item:', error);
@@ -93,40 +93,39 @@ export default function Home() {
 
 
   return (
-    <>
+    <div className='h-dvh overflow-hidden'>
       <NavBar />
       <div className='flex w-dvh'>
-        <div className="flex-1 flex justify-between mt-8 p-4">
-          <div className="flex flex-col items-start w-1/2 h-dvh border-r-[1px] border-[#9e9e9e55]">
+        <div className="flex-1 flex justify-between">
+          <div className="flex flex-col items-start w-1/2 h-dvh border-r-[1px] border-[#9e9e9e55] p-4">
             <h1 className="text-3xl font-bold mb-4">{hotelName.toUpperCase() || 'Hotel Name'}</h1>
             {hotelImage ? (
               <img 
                 src={hotelImage} 
                 alt={hotelName || 'Hotel'} 
-                className="h-[50vh] object-cover rounded-lg"
+                className="h-[50vh] w-full object-cover rounded-lg"
               />
             ) : (
               <p className="text-gray-500">No hotel image available</p>
             )}
           </div>
-          <div className='flex-1 p-4 '>
+          <div className='absolute bottom-5 right-5'>
             <Button 
               variant="contained" 
               color="primary" 
-              onClick={handleOpen} 
-              className="self-start mt-4 mr-4"
+              onClick={handleOpen}
             >
               Add
             </Button>
           </div>
 
           {/* Food Items Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 h-12">
+          <div className="flex flex-wrap content-start gap-4 p-4 h-full w-full]">
             {foodItems.map((item, index) => (
-              <div key={index} className="border rounded-lg p-4 shadow-lg">
+              <div key={index} className="border rounded-lg p-4 shadow-lg h-fit w-[15rem]">
                 <img src={item.foodImage || placeholderImage} alt={item.foodName} className="h-32 w-full object-cover rounded-md mb-2" />
                 <h2 className="font-bold text-lg">{item.foodName}</h2>
-                <p className="text-gray-500">${item.foodPrice}</p>
+                <p className="text-gray-500">Rs {item.foodPrice}</p>
                 <p className="mt-1 text-sm">{item.foodDescription}</p>
               </div>
             ))}
@@ -183,6 +182,6 @@ export default function Home() {
           </Dialog>
         </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -5,7 +5,7 @@ const foodSchema = new mongoose.Schema({
   foodDescription: { type: String, required: true },
   foodImage: { type: String, required: true }, 
   foodPrice: { type: Number, required: true },
-  sellerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true } 
+  sellerId: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true } 
 });
 
-export const Food = mongoose.model('Food', foodSchema);
+export const Food = mongoose.model('foods', foodSchema);

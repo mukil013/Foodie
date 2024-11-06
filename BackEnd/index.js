@@ -16,7 +16,6 @@ if (!process.env.MONGO_URL) {
 const MongoDB = process.env.MONGO_URL;
 const PORT = process.env.PORT || 5000;
 const app = express();
-app.use(cors());
 
 // Connect to MongoDB
 const connectDB = async () => {
@@ -26,7 +25,8 @@ const connectDB = async () => {
 
     // Middleware setup
     app.use(express.json({ limit: '10mb' })); 
-
+    app.use(cors());
+    
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
     process.exit(1); // Exit the process with failure
