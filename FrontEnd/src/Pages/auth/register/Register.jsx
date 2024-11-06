@@ -90,7 +90,7 @@ export default function Register() {
     try {
       const response = await axios.post('http://localhost:3000/user/register', newUser);
       showSnackbar('Registration successful: ' + response.data.message, 'success');
-      navigate('/login')
+      navigate('/')
       resetForm();
     } catch (error) {
       console.error('Error registering user:', error);
