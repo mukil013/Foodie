@@ -76,7 +76,7 @@ export default function Search() {
 
         <input
           type="text"
-          placeholder="Search by name or description..."
+          placeholder="Search by name of the food..."
           className="w-full p-2 border border-gray-300 rounded mb-4"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -106,7 +106,12 @@ export default function Search() {
               {genAiRes && (
                 <div className="p-2 mt-2 border-t border-gray-200">
                   <p className="text-blue-600 font-semibold">AI Insight</p>
-                  <p id="aiInsight" className="text-justify p-2 rounded-lg mt-4">{genAiRes}</p>
+                  <p
+                    id="aiInsight"
+                    className="text-justify p-2 rounded-lg mt-4"
+                  >
+                    {genAiRes}
+                  </p>
                 </div>
               )}
             </div>
