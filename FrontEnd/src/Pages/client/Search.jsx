@@ -52,13 +52,13 @@ export default function Search() {
         {/* Display filtered items */}
         <div className="grid gap-4">
           {filteredItems.map((item) => (
-            <div key={item._id} className="p-4 border rounded shadow-md">
+            <div key={item._id} className="w-[20vw] p-4 border rounded shadow-md">
               <h3 className="text-xl font-semibold">{item.foodName}</h3>
               <p className="text-gray-700">Price: Rs {item.foodPrice}</p>
               <img
                 src={item.foodImage || "https://via.placeholder.com/150"}
                 alt={item.foodName}
-                className="h-32 w-full object-cover rounded-md my-2"
+                className="h-32 w-full object-contain rounded-md my-2"
               />
 
               {/* AI Insight Section */}

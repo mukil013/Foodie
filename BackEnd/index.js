@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 import express from "express";
 import dotenv from "dotenv";
-import cors from 'cors';
-import UserRoute from './Routes/UserRoute.js';
-import FoodRoute from './Routes/foodRoute.js'; 
-import CartRoute from './Routes/cartRoute.js';
+import cors from "cors";
+import UserRoute from "./Routes/UserRoute.js";
+import FoodRoute from "./Routes/foodRoute.js";
+import CartRoute from "./Routes/cartRoute.js";
+import GenAi from "./Routes/GenAI.js";
 
 dotenv.config();
 
@@ -25,9 +26,8 @@ const connectDB = async () => {
     console.log("MongoDB Connected");
 
     // Middleware setup
-    app.use(express.json({ limit: '10mb' })); 
+    app.use(express.json({ limit: "10mb" }));
     app.use(cors());
-
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
     process.exit(1); // Exit the process with failure
@@ -36,16 +36,16 @@ const connectDB = async () => {
 
 // Start the Express server
 const startServer = () => {
-  
   // Routes
-  app.use('/user', UserRoute);
-  app.use('/food', FoodRoute);
-  app.use('/cart', CartRoute);
+  app.use("/user", UserRoute);
+  app.use("/food", FoodRoute);
+  app.use("/cart", CartRoute);
+  app.use("/genai", GenAi);
 
   // Error handling middleware
   app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).send({ message: 'Something went wrong!' });
+    res.status(500).send({ message: "Something went wrong!" });
   });
 
   app.listen(PORT, () => {
@@ -60,4 +60,3 @@ const init = async () => {
 };
 
 init();
-
