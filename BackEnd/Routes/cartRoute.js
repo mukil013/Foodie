@@ -40,6 +40,41 @@ router.post("/add", async (req, res) => {
   }
 });
 
+router.put("/update", async (req, res) => {
+  const { foodId, foodName, foodPrice, foodImage, userId, quantity, status } =
+    req.body;
+
+  try {
+    // Find the cart item by foodId and userId (cart items are unique by foodId for each user)
+    let cartItem = await Cart.findOne({ foodId, userId });
+
+    if (cartItem) {
+      // Update the existing cart item with new quantity and status
+      cartItem.quantity += quantity;
+      cartItem.status = status;
+      await cartItem.save();
+      res.status(200).json({ message: "Cart updated successfully", cartItem });
+    } else {
+      // Create a new cart item if it does not exist
+      cartItem = new Cart({
+        foodId,
+        foodName,
+        foodPrice,
+        foodImage,
+        userId,
+        quantity,
+        status,
+      });
+
+      await cartItem.save();
+      res.status(201).json({ message: "Item added to cart", cartItem });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error adding item to cart", error });
+  }
+});
+
 // Retrieve cart items for a specific user
 router.get("/:userId", async (req, res) => {
   const { userId } = req.params;

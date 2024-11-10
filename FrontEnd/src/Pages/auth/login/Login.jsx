@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import LoginIcon from '@mui/icons-material/Login';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -12,9 +12,11 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [isSeller, setIsSeller] = useState(false);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false); // Loading state for loader
   const navigate = useNavigate();
 
   async function handleLogin() {
+    setLoading(true); // Set loading to true at the start of the login process
     const user = {
       email: email,
       password: password
@@ -36,7 +38,7 @@ export default function Login() {
       const data = await response.json();
   
       // Save specific user information in local storage
-      localStorage.setItem('userId', data.userId)
+      localStorage.setItem('userId', data.userId);
       localStorage.setItem('userName', data.userName);
       localStorage.setItem('userEmail', data.userEmail);
       localStorage.setItem('profilePic', data.profilePic);
@@ -51,6 +53,8 @@ export default function Login() {
       }
     } catch (error) {
       setError(error.message);
+    } finally {
+      setLoading(false); // Reset loading to false after the login process
     }
   
     // Reset the form
@@ -103,13 +107,14 @@ export default function Login() {
         />
 
         <Button 
-          endIcon={<LoginIcon />} 
+          endIcon={loading ? <CircularProgress size={20} /> : <LoginIcon />} 
           variant='contained' 
           color='success' 
           onClick={handleLogin}
           fullWidth
+          disabled={loading} // Disable button while loading
         >
-          Login
+          {loading ? 'Logging in...' : 'Login'}
         </Button>
 
         <p className='mt-4'>New User? <Link to='/register'>Register Here</Link></p>

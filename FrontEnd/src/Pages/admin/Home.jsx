@@ -17,7 +17,6 @@ export default function Home() {
   const [foodName, setFoodName] = useState("");
   const [foodPrice, setFoodPrice] = useState("");
   const [foodImage, setFoodImage] = useState("");
-  const [foodDescription, setFoodDescription] = useState("");
   const [foodItems, setFoodItems] = useState([]);
 
   const placeholderImage = "https://via.placeholder.com/150";
@@ -33,14 +32,14 @@ export default function Home() {
       setHotelName(storedHotelName);
     }
 
-    // Fetch existing food items when the component mounts
     fetchFoodItems();
   }, []);
 
   const fetchFoodItems = async () => {
     try {
+      const userId = localStorage.getItem("userId");
       const response = await axios.get(
-        "https://foodie-vqll.onrender.com/food/get-food"
+        `https://foodie-vqll.onrender.com/food/get-food/${userId}`
       );
       setFoodItems(response.data);
     } catch (error) {
@@ -54,11 +53,9 @@ export default function Home() {
 
   const handleClose = () => {
     setOpen(false);
-    // Reset fields when closing the dialog
     setFoodName("");
     setFoodPrice("");
     setFoodImage("");
-    setFoodDescription("");
   };
 
   const handleFileUpload = (e) => {
@@ -73,8 +70,7 @@ export default function Home() {
   };
 
   const handleAddFoodItem = async () => {
-    // Validate input fields
-    if (!foodName || !foodPrice || !foodDescription || !foodImage) {
+    if (!foodName || !foodPrice || !foodImage) {
       alert("Please fill in all fields before submitting.");
       return;
     }
@@ -82,7 +78,6 @@ export default function Home() {
     const sellerId = localStorage.getItem("userId");
     const newFoodItem = {
       foodName,
-      foodDescription,
       foodImage: foodImage || placeholderImage,
       foodPrice: foodPrice,
       sellerId: sellerId,
@@ -128,7 +123,7 @@ export default function Home() {
           </div>
 
           {/* Food Items Grid */}
-          <div className="flex flex-wrap content-start gap-4 p-4 h-full w-full]">
+          <div className="flex flex-wrap content-start gap-4 p-4 h-full w-full">
             {foodItems.map((item, index) => (
               <div
                 key={index}
@@ -141,7 +136,6 @@ export default function Home() {
                 />
                 <h2 className="font-bold text-lg">{item.foodName}</h2>
                 <p className="text-gray-500">Rs {item.foodPrice}</p>
-                <p className="mt-1 text-sm">{item.foodDescription}</p>
               </div>
             ))}
           </div>
@@ -180,16 +174,6 @@ export default function Home() {
                   className="block mt-1"
                 />
               </label>
-              <TextField
-                margin="dense"
-                label="Food Description"
-                type="text"
-                fullWidth
-                multiline
-                rows={3}
-                value={foodDescription}
-                onChange={(e) => setFoodDescription(e.target.value)}
-              />
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose} color="primary">
