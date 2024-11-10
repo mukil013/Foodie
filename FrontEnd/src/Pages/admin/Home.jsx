@@ -38,9 +38,9 @@ export default function Home() {
 
   const fetchFoodItems = async () => {
     try {
-      const userId = sessionStorage.getItem("userId");
+      const sellerId = sessionStorage.getItem("userId");
       const response = await axios.get(
-        `https://foodie-vqll.onrender.com/food/get-food/${userId}`
+        `https://foodie-vqll.onrender.com/food/get-food/${sellerId}`
       );
       console.log(response.data);
       setFoodItems(response.data);
