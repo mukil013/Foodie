@@ -16,7 +16,7 @@ router.post("/add-food", async (req, res) => {
   }
 });
 
-router.get("/get-food/:sellerId", async (req, res) => {
+router.get('/get-food/:sellerId', async (req, res) => {
   const { sellerId } = req.params;
   try {
     const foodForSeller = await Food.find({ sellerId });
