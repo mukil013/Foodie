@@ -20,11 +20,7 @@ router.get("/get-food/:userId", async (req, res) => {
   const { userId } = req.params["userId"];
   try {
     const foodForSeller = await Food.find({ userId });
-    if (foodForSeller == []) {
-      res.status(200).send(foodForSeller);
-    } else {
-      res.status(200).send("Foods list is empty!");
-    }
+    res.status(200).send(foodForSeller);
   } catch (e) {
     res.status(500).send({ message: e.message });
   }

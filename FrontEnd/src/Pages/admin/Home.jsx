@@ -41,6 +41,7 @@ export default function Home() {
       const response = await axios.get(
         `https://foodie-vqll.onrender.com/food/get-food/${userId}`
       );
+      console.log(response.data)
       setFoodItems(response.data);
     } catch (error) {
       console.error("Error fetching food items:", error);
