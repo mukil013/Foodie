@@ -136,7 +136,7 @@ export default function Home() {
                 <img
                   src={item.foodImage || placeholderImage}
                   alt={item.foodName}
-                  className="h-32 w-full object-cover rounded-md mb-2"
+                  className="h-32 w-full object-contain rounded-md mb-2"
                 />
                 <h2 className="font-bold text-lg">{item.foodName}</h2>
                 <p className="text-gray-500">Rs {item.foodPrice}</p>

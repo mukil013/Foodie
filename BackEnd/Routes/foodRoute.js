@@ -16,8 +16,8 @@ router.post("/add-food", async (req, res) => {
   }
 });
 
-router.get("/get-food/:userId", async (req, res) => {
-  const { sellerId } = req.params["userId"];
+router.get("/get-food/:sellerId", async (req, res) => {
+  const { sellerId } = req.params["sellerId"];
   try {
     const foodForSeller = await Food.find({ sellerId });
     res.status(200).send(foodForSeller);
