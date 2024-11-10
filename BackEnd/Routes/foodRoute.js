@@ -17,9 +17,9 @@ router.post("/add-food", async (req, res) => {
 });
 
 router.get("/get-food/:userId", async (req, res) => {
-  const { userId } = req.params["userId"];
+  const { sellerId } = req.params["userId"];
   try {
-    const foodForSeller = await Food.find({ userId });
+    const foodForSeller = await Food.find({ sellerId });
     res.status(200).send(foodForSeller);
   } catch (e) {
     res.status(500).send({ message: e.message });

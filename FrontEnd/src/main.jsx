@@ -12,6 +12,8 @@ import History from "./Pages/admin/History.jsx";
 import Status from "./Pages/admin/Status.jsx";
 import Login from "./Pages/auth/login/Login.jsx";
 import Register from "./Pages/auth/register/Register.jsx";
+import HomeUser from "./Pages/client/Home.jsx";
+import Search from "./Pages/client/Search.jsx";
 
 
 createRoot(document.getElementById("root")).render(
@@ -24,6 +26,9 @@ createRoot(document.getElementById("root")).render(
         <Route path="/history" element={<History />} />
         <Route exact path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/user" element={<HomeUser />}/>
+        <Route path="/search" element={<Search />}/>
+        
       </Routes>
     </Bro>
   </StrictMode>

@@ -36,14 +36,15 @@ export default function Login() {
       }
   
       const data = await response.json();
+      console.log('Login Response:', data); // Log the response to inspect the returned data
   
-      // Save specific user information in local storage
-      localStorage.setItem('userId', data.userId);
-      localStorage.setItem('userName', data.userName);
-      localStorage.setItem('userEmail', data.userEmail);
-      localStorage.setItem('profilePic', data.profilePic);
-      localStorage.setItem('hotelName', data.hotelName);
-      localStorage.setItem('hotelImage', data.hotelImage);
+      // Save specific user information in session storage
+      sessionStorage.setItem('userId', data.userId);
+      sessionStorage.setItem('userName', data.userName);
+      sessionStorage.setItem('userEmail', data.userEmail);
+      sessionStorage.setItem('profilePic', data.profilePic);
+      sessionStorage.setItem('hotelName', data.hotelName);
+      sessionStorage.setItem('hotelImage', data.hotelImage);
   
       // Redirect based on user role
       if (data.isSeller) {
@@ -62,7 +63,6 @@ export default function Login() {
     setPassword('');
     setIsSeller(false);
   }
-  
 
   return (
     <div className='h-dvh w-dvw flex justify-center items-center'>

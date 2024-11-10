@@ -16,14 +16,15 @@ export default function Home() {
   const [open, setOpen] = useState(false);
   const [foodName, setFoodName] = useState("");
   const [foodPrice, setFoodPrice] = useState("");
+  const [foodDescription, setFoodDescription] = useState("");
   const [foodImage, setFoodImage] = useState("");
   const [foodItems, setFoodItems] = useState([]);
 
   const placeholderImage = "https://via.placeholder.com/150";
 
   useEffect(() => {
-    const storedHotelImage = localStorage.getItem("hotelImage");
-    const storedHotelName = localStorage.getItem("hotelName");
+    const storedHotelImage = sessionStorage.getItem("hotelImage");
+    const storedHotelName = sessionStorage.getItem("hotelName");
 
     if (storedHotelImage) {
       setHotelImage(storedHotelImage);
@@ -37,11 +38,11 @@ export default function Home() {
 
   const fetchFoodItems = async () => {
     try {
-      const userId = localStorage.getItem("userId");
+      const userId = sessionStorage.getItem("userId");
       const response = await axios.get(
         `https://foodie-vqll.onrender.com/food/get-food/${userId}`
       );
-      console.log(response.data)
+      console.log(response.data);
       setFoodItems(response.data);
     } catch (error) {
       console.error("Error fetching food items:", error);
@@ -56,6 +57,7 @@ export default function Home() {
     setOpen(false);
     setFoodName("");
     setFoodPrice("");
+    setFoodDescription("");
     setFoodImage("");
   };
 
@@ -71,16 +73,17 @@ export default function Home() {
   };
 
   const handleAddFoodItem = async () => {
-    if (!foodName || !foodPrice || !foodImage) {
+    if (!foodName || !foodPrice || !foodImage || !foodDescription) {
       alert("Please fill in all fields before submitting.");
       return;
     }
 
-    const sellerId = localStorage.getItem("userId");
+    const sellerId = sessionStorage.getItem("userId");
     const newFoodItem = {
       foodName,
       foodImage: foodImage || placeholderImage,
       foodPrice: foodPrice,
+      foodDescription: foodDescription,
       sellerId: sellerId,
     };
 
@@ -104,7 +107,7 @@ export default function Home() {
       <div className="flex w-dvh">
         <div className="flex-1 flex justify-between">
           <div className="flex flex-col items-start w-1/2 h-dvh border-r-[1px] border-[#9e9e9e55] p-4">
-            <h1 className="text-3xl font-bold mb-4">
+            <h1 className="text-3xl font-semibold mb-4">
               {hotelName.toUpperCase() || "Hotel Name"}
             </h1>
             {hotelImage ? (
@@ -119,7 +122,7 @@ export default function Home() {
           </div>
           <div className="absolute bottom-5 right-5">
             <Button variant="contained" color="primary" onClick={handleOpen}>
-              Add
+              Add food
             </Button>
           </div>
 
@@ -137,6 +140,7 @@ export default function Home() {
                 />
                 <h2 className="font-bold text-lg">{item.foodName}</h2>
                 <p className="text-gray-500">Rs {item.foodPrice}</p>
+                <p className="text-gray-700">{item.foodDescription}</p>
               </div>
             ))}
           </div>
@@ -165,6 +169,16 @@ export default function Home() {
                 fullWidth
                 value={foodPrice}
                 onChange={(e) => setFoodPrice(e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Food Description"
+                type="text"
+                fullWidth
+                multiline
+                rows={3}
+                value={foodDescription}
+                onChange={(e) => setFoodDescription(e.target.value)}
               />
               <label className="block mt-4">
                 Food Image
