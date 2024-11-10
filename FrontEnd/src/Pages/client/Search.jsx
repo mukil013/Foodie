@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import NavBar from "../../Components/client/NavBar";
+import { Button } from "@mui/material";
 import axios from "axios";
 
 export default function Search() {
@@ -8,10 +9,7 @@ export default function Search() {
   const [filteredItems, setFilteredItems] = useState([]);
   const [genAiRes, setGenAiRes] = useState(null);
 
-  if (searchTerm === null) setGenAiRes(null);
-
   useEffect(() => {
-    
     const fetchFoodItems = async () => {
       try {
         const response = await axios.get(
@@ -27,7 +25,6 @@ export default function Search() {
   }, []);
 
   useEffect(() => {
-    
     if (searchTerm) {
       const filtered = foodItems.filter(
         (item) =>
@@ -60,11 +57,16 @@ export default function Search() {
     if (searchTerm && searchTerm.trim() !== "") {
       timeoutId = setTimeout(() => {
         genAi(searchTerm);
-      }, 1000); 
+      }, 1000); // Delay for 1 second
     }
 
     return () => clearTimeout(timeoutId);
   }, [genAi, searchTerm]);
+
+  const addToCart = (foodItem) => {
+    console.log("Added to cart:", foodItem);
+    // Additional cart logic can be added here
+  };
 
   return (
     <>
@@ -93,7 +95,14 @@ export default function Search() {
                 alt={item.foodName}
                 className="h-32 w-full object-contain rounded-md my-2"
               />
-
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => addToCart(item)}
+                className="mt-2"
+              >
+                Add to Cart
+              </Button>
               {genAiRes && (
                 <div className="p-2 mt-2 border-t border-gray-200">
                   <p className="text-blue-600 font-semibold">AI Insight</p>
