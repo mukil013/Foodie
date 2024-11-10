@@ -14,6 +14,7 @@ import Login from "./Pages/auth/login/Login.jsx";
 import Register from "./Pages/auth/register/Register.jsx";
 import HomeUser from "./Pages/client/Home.jsx";
 import Search from "./Pages/client/Search.jsx";
+import Cart from "./Pages/client/cart.jsx";
 
 
 createRoot(document.getElementById("root")).render(
@@ -28,7 +29,8 @@ createRoot(document.getElementById("root")).render(
         <Route path="/register" element={<Register />} />
         <Route path="/user" element={<HomeUser />}/>
         <Route path="/search" element={<Search />}/>
-        
+        <Route path="/cart" element={<Cart />} />
+
       </Routes>
     </Bro>
   </StrictMode>

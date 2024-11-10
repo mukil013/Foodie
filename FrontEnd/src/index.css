@@ -5,3 +5,16 @@
 .active{
   color: red;
 }
+
+#aiInsight{
+  animation: animation 1s infinite alternate ease;
+}
+
+@keyframes animation {
+  0%{
+    box-shadow: 0 0 0 rgba(65, 105, 225, 0.5);
+  }
+  100%{
+    box-shadow: 0 0 1rem rgba(65, 105, 225, 0.5);
+  }
+}

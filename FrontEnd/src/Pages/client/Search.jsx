@@ -8,8 +8,10 @@ export default function Search() {
   const [filteredItems, setFilteredItems] = useState([]);
   const [genAiRes, setGenAiRes] = useState(null);
 
+  if (searchTerm === null) setGenAiRes(null);
+
   useEffect(() => {
-    // Fetch food items on component mount
+    
     const fetchFoodItems = async () => {
       try {
         const response = await axios.get(
@@ -25,7 +27,7 @@ export default function Search() {
   }, []);
 
   useEffect(() => {
-    // Filter items based on search term
+    
     if (searchTerm) {
       const filtered = foodItems.filter(
         (item) =>
@@ -46,10 +48,10 @@ export default function Search() {
       const response = await axios.get(
         `https://foodie-vqll.onrender.com/genai/${foodName}`
       );
-      setGenAiRes(response.data); // Update state only on successful response
+      setGenAiRes(response.data);
     } catch (error) {
       console.error("Error fetching AI insight:", error);
-      setGenAiRes(null); // Set back to null on error
+      setGenAiRes(null);
     }
   }, []);
 
@@ -58,7 +60,7 @@ export default function Search() {
     if (searchTerm && searchTerm.trim() !== "") {
       timeoutId = setTimeout(() => {
         genAi(searchTerm);
-      }, 1000); // Delay for 1 second
+      }, 1000); 
     }
 
     return () => clearTimeout(timeoutId);
@@ -70,7 +72,6 @@ export default function Search() {
       <div className="p-4">
         <h1 className="text-4xl font-semibold mb-4">Search</h1>
 
-        {/* Search Input */}
         <input
           type="text"
           placeholder="Search by name or description..."
@@ -79,7 +80,6 @@ export default function Search() {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
-        {/* Display filtered items */}
         <div className="grid gap-4">
           {filteredItems.map((item) => (
             <div
@@ -94,17 +94,15 @@ export default function Search() {
                 className="h-32 w-full object-contain rounded-md my-2"
               />
 
-              {/* Conditionally display AI Insight Section */}
               {genAiRes && (
                 <div className="p-2 mt-2 border-t border-gray-200">
                   <p className="text-blue-600 font-semibold">AI Insight</p>
-                  <p>{genAiRes}</p>
+                  <p id="aiInsight" className="text-justify p-2 rounded-lg mt-4">{genAiRes}</p>
                 </div>
               )}
             </div>
           ))}
 
-          {/* No results message */}
           {filteredItems.length === 0 && searchTerm && (
             <p className="text-gray-500">No items match your search.</p>
           )}

@@ -14,7 +14,7 @@ router.get("/:foodname", async (req, res) => {
     const foodName = req.params.foodname;
 
     // Construct the prompt with the specific food name
-    const prompt = `Tell me the nutritional value of ${foodName} for a 150g serving in 50 words.`;
+    const prompt = `Tell me the nutritional value of ${foodName} for a 1 serving in 50 words.`;
     const result = await model.generateContent(prompt);
     res.status(200).send(result.response.text());
   } catch (e) {
