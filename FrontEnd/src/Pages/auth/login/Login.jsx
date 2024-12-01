@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
+// import FormControlLabel from '@mui/material/FormControlLabel';
+// import Switch from '@mui/material/Switch';
 import { Button, CircularProgress } from '@mui/material';
 import LoginIcon from '@mui/icons-material/Login';
 import { Link, useNavigate } from 'react-router-dom';
@@ -12,11 +12,11 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [isSeller, setIsSeller] = useState(false);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false); // Loading state for loader
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   async function handleLogin() {
-    setLoading(true); // Set loading to true at the start of the login process
+    setLoading(true); 
     const user = {
       email: email,
       password: password
@@ -36,9 +36,9 @@ export default function Login() {
       }
   
       const data = await response.json();
-      console.log('Login Response:', data); // Log the response to inspect the returned data
+      console.log('Login Response:', data); 
   
-      // Save specific user information in session storage
+      
       sessionStorage.setItem('userId', data.userId);
       sessionStorage.setItem('userName', data.userName);
       sessionStorage.setItem('userEmail', data.userEmail);
@@ -46,7 +46,7 @@ export default function Login() {
       sessionStorage.setItem('hotelName', data.hotelName);
       sessionStorage.setItem('hotelImage', data.hotelImage);
   
-      // Redirect based on user role
+      
       if (data.isSeller) {
         navigate('/admin');
       } else {
@@ -55,10 +55,9 @@ export default function Login() {
     } catch (error) {
       setError(error.message);
     } finally {
-      setLoading(false); // Reset loading to false after the login process
+      setLoading(false); 
     }
   
-    // Reset the form
     setEmail('');
     setPassword('');
     setIsSeller(false);
@@ -93,7 +92,7 @@ export default function Login() {
           fullWidth
         />
 
-        <FormControlLabel
+        {/* <FormControlLabel
           control={
             <Switch 
               color="primary" 
@@ -104,7 +103,7 @@ export default function Login() {
           label="Seller"
           labelPlacement="end"
           title="Check this if you're a seller"
-        />
+        /> */}
 
         <Button 
           endIcon={loading ? <CircularProgress size={20} /> : <LoginIcon />} 
@@ -112,7 +111,7 @@ export default function Login() {
           color='success' 
           onClick={handleLogin}
           fullWidth
-          disabled={loading} // Disable button while loading
+          disabled={loading}
         >
           {loading ? 'Logging in...' : 'Login'}
         </Button>

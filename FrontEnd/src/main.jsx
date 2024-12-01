@@ -14,7 +14,7 @@ import Login from "./Pages/auth/login/Login.jsx";
 import Register from "./Pages/auth/register/Register.jsx";
 import HomeUser from "./Pages/client/Home.jsx";
 import Search from "./Pages/client/Search.jsx";
-import Cart from "./Pages/client/cart.jsx";
+import Cart from "./Pages/client/Cart.jsx";
 
 
 createRoot(document.getElementById("root")).render(
