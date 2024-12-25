@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import NavBar from '../../Components/client/NavBar';
-// import { Button } from '@mui/material';
-// import { useNavigate } from 'react-router-dom';
 
 const images = [
   "https://img.freepik.com/free-vector/cartoon-indian-restaurant-background_52683-69329.jpg?t=st=1731220334~exp=1731223934~hmac=e3ad6fdbe1eff152cd318c099dba6f1f968d161d96da1ee31a8576e0426d52cc&w=996",

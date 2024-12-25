@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Route to add a food item
 router.post("/add-food", async (req, res) => {
-  console.log("Request body:", req.body); // Log the incoming data
+  console.log("Request body:", req.body);
   try {
     const foodItem = new Food(req.body);
     await foodItem.save();
@@ -26,7 +26,7 @@ router.get('/get-food/:sellerId', async (req, res) => {
   }
 });
 
-// Route to get all food items (optional)
+// Route to get all food items
 router.get("/get-food", async (req, res) => {
   try {
     const foodItems = await Food.find();
@@ -35,5 +35,15 @@ router.get("/get-food", async (req, res) => {
     res.status(500).send({ message: "Failed to fetch food items", error });
   }
 });
+
+router.delete('/delete-food/:foodId', async(req,res) => {
+  try{
+    const foodId = req.params
+    await Food.deleteOne(foodId)
+    res.status(200).send("Deleted Successfully!!!")
+  }catch (error){
+    res.status(500).send({ message: "Failed to delete food items", error });
+  }
+})
 
 export default router;

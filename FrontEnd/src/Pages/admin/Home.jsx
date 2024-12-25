@@ -9,6 +9,7 @@ import {
   TextField,
 } from "@mui/material";
 import axios from "axios";
+import { Food } from "../../api/Api";
 
 export default function Home() {
   const [hotelImage, setHotelImage] = useState("");
@@ -40,7 +41,7 @@ export default function Home() {
     try {
       const sellerId = sessionStorage.getItem("userId");
       const response = await axios.get(
-        `https://foodie-vqll.onrender.com/food/get-food/${sellerId}`
+        `${Food}/get-food/${sellerId}`
       );
       console.log(response.data);
       setFoodItems(response.data);
@@ -89,7 +90,7 @@ export default function Home() {
 
     try {
       const response = await axios.post(
-        "https://foodie-vqll.onrender.com/food/add-food",
+        `${Food}/add-food`,
         newFoodItem
       );
       console.log("Food item added:", response.data);
@@ -144,8 +145,6 @@ export default function Home() {
               </div>
             ))}
           </div>
-
-          {/* Dialog Form for Adding Food Items */}
           <Dialog
             open={open}
             onClose={handleClose}

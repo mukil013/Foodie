@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import FormGroup from '@mui/material/FormGroup';
-// import FormControlLabel from '@mui/material/FormControlLabel';
-// import Switch from '@mui/material/Switch';
 import { Button, CircularProgress } from '@mui/material';
 import LoginIcon from '@mui/icons-material/Login';
 import { Link, useNavigate } from 'react-router-dom';
@@ -68,7 +66,7 @@ export default function Login() {
       <FormGroup className='h-auto w-[90%] max-w-md shadow-md border-[1px] border-[#9e9e9e55] rounded-md p-6 flex flex-col items-center gap-4'>
         <h1 className='text-4xl font-bold mb-4'>Login</h1>
 
-        {error && <p className='text-red-500'>{error}</p>} {/* Display error message */}
+        {error && <p className='text-red-500'>{error}</p>}
 
         <TextField 
           id='email' 
@@ -91,19 +89,6 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
           fullWidth
         />
-
-        {/* <FormControlLabel
-          control={
-            <Switch 
-              color="primary" 
-              checked={isSeller}
-              onChange={(e) => setIsSeller(e.target.checked)}
-            />
-          }
-          label="Seller"
-          labelPlacement="end"
-          title="Check this if you're a seller"
-        /> */}
 
         <Button 
           endIcon={loading ? <CircularProgress size={20} /> : <LoginIcon />} 

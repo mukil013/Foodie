@@ -1,15 +1,15 @@
 import express from "express";
-import bcrypt from "bcrypt"; // Import bcrypt
+import bcrypt from "bcrypt"; 
 import { Users } from "../Models/UserModel.js";
 
 const route = express.Router();
 
-// Define a salt rounds value
+
 const saltRounds = 10;
 
 route.post('/register', async (req, res) => {
   try {
-    // Basic user details
+    
     let userData = {
       email: req.body.email,
       password: req.body.password,
@@ -18,7 +18,7 @@ route.post('/register', async (req, res) => {
       isSeller: req.body.isSeller
     };
 
-    // Add seller-specific fields if isSeller is true
+    
     if (req.body.isSeller) {
       userData = {
         ...userData,

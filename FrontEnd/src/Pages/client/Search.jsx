@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../../Components/client/NavBar";
 import { Button } from "@mui/material";
 import axios from "axios";
@@ -7,7 +7,7 @@ export default function Search() {
   const [foodItems, setFoodItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
-  const [genAiRes, setGenAiRes] = useState(null);
+  const [aiInsights, setAiInsights] = useState({}); // State to store AI insights
 
   useEffect(() => {
     const fetchFoodItems = async () => {
@@ -40,28 +40,33 @@ export default function Search() {
     }
   }, [searchTerm, foodItems]);
 
-  const genAi = useCallback(async (foodName) => {
-    try {
-      const response = await axios.get(
-        `https://foodie-vqll.onrender.com/genai/${foodName}`
-      );
-      setGenAiRes(response.data);
-    } catch (error) {
-      console.error("Error fetching AI insight:", error);
-      setGenAiRes(null);
+  const toggleAiInsight = async (foodName, foodId) => {
+    if (aiInsights[foodId]) {
+      // If AI insight already exists, toggle its visibility
+      setAiInsights((prev) => {
+        const updatedInsights = { ...prev };
+        delete updatedInsights[foodId];
+        return updatedInsights;
+      });
+    } else {
+      // Fetch AI insight and display it
+      try {
+        const response = await axios.get(
+          `https://foodie-vqll.onrender.com/genai/${foodName}`
+        );
+        setAiInsights((prev) => ({
+          ...prev,
+          [foodId]: response.data, // Update AI insight for this food item
+        }));
+      } catch (error) {
+        console.error("Error fetching AI insight:", error);
+        setAiInsights((prev) => ({
+          ...prev,
+          [foodId]: "Unable to fetch AI insight",
+        }));
+      }
     }
-  }, []);
-
-  useEffect(() => {
-    let timeoutId;
-    if (searchTerm && searchTerm.trim() !== "") {
-      timeoutId = setTimeout(() => {
-        genAi(searchTerm);
-      }, 1000); // Delay for 1 second
-    }
-
-    return () => clearTimeout(timeoutId);
-  }, [genAi, searchTerm]);
+  };
 
   const addToCart = (foodItem) => {
     console.log("Added to cart:", foodItem);
@@ -82,7 +87,7 @@ export default function Search() {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
-        <div className="grid gap-4">
+        <div className="flex gap-5 flex-wrap">
           {filteredItems.map((item) => (
             <div
               key={item._id}
@@ -95,22 +100,31 @@ export default function Search() {
                 alt={item.foodName}
                 className="h-32 w-full object-contain rounded-md my-2"
               />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => addToCart(item)}
-                className="mt-2"
-              >
-                Add to Cart
-              </Button>
-              {genAiRes && (
+              <div className="flex gap-4">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => addToCart(item)}
+                  className="mt-2 text-left"
+                >
+                  Add to Cart
+                </Button>
+
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => toggleAiInsight(item.foodName, item._id)}
+                  className="mt-2 text-left" 
+                >
+                  {aiInsights[item._id] ? "Hide AI Insight" : "Get AI Insight"}
+                </Button>
+              </div>
+
+              {aiInsights[item._id] && (
                 <div className="p-2 mt-2 border-t border-gray-200">
                   <p className="text-blue-600 font-semibold">AI Insight</p>
-                  <p
-                    id="aiInsight"
-                    className="text-justify p-2 rounded-lg mt-4"
-                  >
-                    {genAiRes}
+                  <p className="text-justify p-2 rounded-lg mt-4">
+                    {aiInsights[item._id]}
                   </p>
                 </div>
               )}

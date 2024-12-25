@@ -22,7 +22,10 @@ export default function NavBar() {
             <NavLink to="/user" activeClassName="active">Home</NavLink>
           </li>
           <li>
-            <NavLink to="/search" activeClassName="active">Explore</NavLink>
+            <NavLink to="/explore" activeClassName="active">Explore</NavLink>
+          </li>
+          <li>
+            <NavLink to="/search" activeClassName="active">Search</NavLink>
           </li>
           <li>
             <NavLink to="/cart" activeClassName="active">My Cart</NavLink>
