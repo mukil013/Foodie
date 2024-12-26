@@ -6,35 +6,32 @@ import axios from "axios";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
-// Register Chart.js components
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function FoodExpanded() {
-  const { foodId } = useParams(); // Retrieve foodId from URL parameters
-  const [food, setFood] = useState(null); // State to store the selected food item
-  const [aiInsight, setAiInsight] = useState(null); // State to store AI insights
-  const [loading, setLoading] = useState(true); // State for loading status
-  const [error, setError] = useState(""); // State for error message
+  const { foodId } = useParams(); 
+  const [food, setFood] = useState(null); 
+  const [aiInsight, setAiInsight] = useState(null); 
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(""); 
 
-  // Fetch food details
   useEffect(() => {
-    const foodList = JSON.parse(sessionStorage.getItem("foodList")) || []; // Retrieve food list from sessionStorage
-    const matchedFood = foodList.find((element) => element._id === foodId); // Find the specific food item
-    setFood(matchedFood); // Update state with the matched food item
+    const foodList = JSON.parse(sessionStorage.getItem("foodList")) || [];
+    const matchedFood = foodList.find((element) => element._id === foodId);
+    setFood(matchedFood); 
   }, [foodId]);
 
-  // Fetch AI insight data
   useEffect(() => {
     const fetchAIInsight = async () => {
       if (food) {
-        setLoading(true); // Start loading
+        setLoading(true); 
         try {
           const response = await axios.get(
             `https://foodie-vqll.onrender.com/genai/json/${food.foodName}`
           );
           const insightText = response.data?.candidates[0]?.content?.parts[0]?.text;
 
-          // Safely parse the JSON
           let insightJSON = null;
           if (insightText) {
             try {
@@ -47,7 +44,7 @@ export default function FoodExpanded() {
 
           if (insightJSON && insightJSON.nutritional_value) {
             setAiInsight(insightJSON);
-            setError(""); // Clear any previous error
+            setError(""); 
           } else {
             throw new Error("Nutritional data is incomplete or unavailable.");
           }
@@ -55,7 +52,7 @@ export default function FoodExpanded() {
           setError("Failed to fetch nutritional insights. Please try again.");
           console.error("Error fetching AI insight:", err);
         } finally {
-          setLoading(false); // Stop loading
+          setLoading(false); 
         }
       }
     };
@@ -63,7 +60,6 @@ export default function FoodExpanded() {
     fetchAIInsight();
   }, [food]);
 
-  // Show loading state
   if (loading) {
     return (
       <>
@@ -75,7 +71,6 @@ export default function FoodExpanded() {
     );
   }
 
-  // Show error or if food is not found
   if (!food || error) {
     return (
       <>
@@ -89,7 +84,6 @@ export default function FoodExpanded() {
     );
   }
 
-  // Prepare chart data if AI insight is available
   const chartData =
     aiInsight && aiInsight.nutritional_value
       ? {

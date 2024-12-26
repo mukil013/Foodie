@@ -23,8 +23,32 @@ export default function Explore() {
     fetchFoodItems();
   }, [allFood]);
 
-  const addToCart = (foodItem) => {
-    console.log("Added to cart:", foodItem);
+  const addToCart = async (foodItem) => {
+    const { _id, foodName, foodPrice, foodImage } = foodItem;
+    let foodId = _id
+    if (!userId) {
+      alert("Please login to add items to the cart");
+      return;
+    }
+
+    const cartItem = {
+      foodId,
+      foodName,
+      foodPrice,
+      foodImage,
+      userId,
+      quantity: 1,
+      status: "active",
+    };
+
+    try {
+      await axios.post("https://foodie-vqll.onrender.com/cart/add", cartItem);
+
+      alert("Item added to cart successfully!");
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+      alert("Failed to add item to cart");
+    }
   };
 
   return (

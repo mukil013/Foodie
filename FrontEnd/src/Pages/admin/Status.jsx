@@ -24,7 +24,7 @@ export default function Status() {
   }, []);
 
   const fetchCartDetails = () => {
-    axios.get("https://foodie-vqll.onrender.com/cart/")
+    axios.get("http://localhost:3000/cart/")  // Updated URL to localhost
       .then(response => {
         setCartDetails(response.data);
         setLoading(false);
