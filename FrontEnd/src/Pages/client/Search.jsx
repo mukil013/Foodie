@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import NavBar from "../../Components/client/NavBar";
 import { Button } from "@mui/material";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function Search() {
   const [foodItems, setFoodItems] = useState([]);
@@ -42,21 +43,21 @@ export default function Search() {
 
   const toggleAiInsight = async (foodName, foodId) => {
     if (aiInsights[foodId]) {
-      // If AI insight already exists, toggle its visibility
+      
       setAiInsights((prev) => {
         const updatedInsights = { ...prev };
         delete updatedInsights[foodId];
         return updatedInsights;
       });
     } else {
-      // Fetch AI insight and display it
+      
       try {
         const response = await axios.get(
           `https://foodie-vqll.onrender.com/genai/${foodName}`
         );
         setAiInsights((prev) => ({
           ...prev,
-          [foodId]: response.data, // Update AI insight for this food item
+          [foodId]: response.data, 
         }));
       } catch (error) {
         console.error("Error fetching AI insight:", error);
@@ -70,7 +71,7 @@ export default function Search() {
 
   const addToCart = (foodItem) => {
     console.log("Added to cart:", foodItem);
-    // Additional cart logic can be added here
+    
   };
 
   return (
@@ -95,11 +96,13 @@ export default function Search() {
             >
               <h3 className="text-xl font-semibold">{item.foodName}</h3>
               <p className="text-gray-700">Price: Rs {item.foodPrice}</p>
-              <img
-                src={item.foodImage || "https://via.placeholder.com/150"}
-                alt={item.foodName}
-                className="h-32 w-full object-contain rounded-md my-2"
-              />
+              <Link to={`/order/${item._id}`}>
+                <img
+                  src={item.foodImage || "https://via.placeholder.com/150"}
+                  alt={item.foodName}
+                  className="h-32 w-full object-contain rounded-md my-2"
+                />
+              </Link>
               <div className="flex gap-4">
                 <Button
                   variant="contained"

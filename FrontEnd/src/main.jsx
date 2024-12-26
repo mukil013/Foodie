@@ -16,6 +16,7 @@ import HomeUser from "./Pages/client/Home.jsx";
 import Search from "./Pages/client/Search.jsx";
 import Cart from "./Pages/client/Cart.jsx";
 import Explore from "./Pages/client/Explore.jsx";
+import FoodExpanded from "./Pages/client/FoodExpanded.jsx";
 
 
 createRoot(document.getElementById("root")).render(
@@ -32,6 +33,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/search" element={<Search />}/>
         <Route path="/cart" element={<Cart />} />
         <Route path="/explore" element={<Explore />} />
+        <Route path="/order/:foodId" element={<FoodExpanded/>} />
       </Routes>
     </Bro>
   </StrictMode>

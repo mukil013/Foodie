@@ -5,7 +5,7 @@ export default function Cart() {
   return (
     <>
       <NavBar />
-      
+      <h1 className='text-4xl font-bold p-4'>My Cart</h1>
     </>
   )
 }
