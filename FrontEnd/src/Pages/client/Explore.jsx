@@ -3,6 +3,7 @@ import NavBar from "../../Components/client/NavBar";
 import { Food } from "../../api/Api";
 import { Button } from "@mui/material";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function Explore() {
   const [foodItems, setFoodItems] = useState([]);
@@ -13,7 +14,7 @@ export default function Explore() {
       try {
         const response = await axios.get(allFood);
         setFoodItems(response.data);
-        sessionStorage.setItem("foodList",JSON.stringify(response.data));
+        sessionStorage.setItem("foodList", JSON.stringify(response.data));
       } catch (error) {
         console.error("Error fetching food items:", error);
       }
@@ -40,11 +41,13 @@ export default function Explore() {
               >
                 <h3 className="text-xl font-semibold">{item.foodName}</h3>
                 <p className="text-gray-700">Price: Rs {item.foodPrice}</p>
+                <Link to={`/order/${item._id}`}>
                 <img
-                  src={item.foodImage || "https://via.placeholder.com/150"}
-                  alt={item.foodName}
-                  className="h-32 w-full object-contain rounded-md my-2"
-                />
+                    src={item.foodImage || "https://via.placeholder.com/150"}
+                    alt={item.foodName}
+                    className="h-32 w-full object-contain rounded-md my-2"
+                  />
+                </Link>
                 <Button
                   variant="contained"
                   color="primary"
