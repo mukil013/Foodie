@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import NavBar from '../../Components/admin/NavBar';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import NavBar from "../../Components/admin/NavBar";
 import {
   Table,
   TableBody,
@@ -13,7 +13,7 @@ import {
   Select,
   FormControl,
   Typography,
-} from '@mui/material';
+} from "@mui/material";
 
 export default function Status() {
   const [cartDetails, setCartDetails] = useState([]);
@@ -24,12 +24,13 @@ export default function Status() {
   }, []);
 
   const fetchCartDetails = () => {
-    axios.get("http://localhost:3000/cart/")  // Updated URL to localhost
-      .then(response => {
+    axios
+      .get("https://foodie-vqll.onrender.com/cart/")
+      .then((response) => {
         setCartDetails(response.data);
         setLoading(false);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("There was an error fetching the cart details:", error);
         setLoading(false);
       });
@@ -48,9 +49,7 @@ export default function Status() {
         <TableCell>{item.quantity}</TableCell>
         <TableCell>
           <FormControl fullWidth>
-            <Select
-              value={item.status}
-            >
+            <Select value={item.status}>
               <MenuItem value="pending">Pending</MenuItem>
               <MenuItem value="Out for delivery">Out for delivery</MenuItem>
               <MenuItem value="Delivered">Delivered</MenuItem>
@@ -64,7 +63,7 @@ export default function Status() {
   return (
     <>
       <NavBar />
-      <div style={{ padding: '20px' }}>
+      <div style={{ padding: "20px" }}>
         <Typography variant="h4" gutterBottom>
           Cart Details
         </Typography>
